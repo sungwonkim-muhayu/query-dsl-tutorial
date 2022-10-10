@@ -9,5 +9,6 @@ spring:
     open-in-view: true
     properties:
       hibernate:
+        generate_statistics : false
         show_sql: true
         format_sql: true

@@ -26,4 +26,11 @@ public class Post {
     comment.setPost(this);
     return this.comments.add(comment);
   }
+
+  public boolean addComments(final Iterable<Comment> comments) {
+    for (final Comment comment : comments) {
+      this.addComment(comment);
+    }
+    return true;
+  }
 }
