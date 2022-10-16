@@ -1,5 +1,6 @@
 package com.sungwonkim.querydsltutorial.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +13,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class Blog {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @JsonIgnore
   private Long id;
 
   @OneToMany(mappedBy = "blog", fetch = FetchType.LAZY)

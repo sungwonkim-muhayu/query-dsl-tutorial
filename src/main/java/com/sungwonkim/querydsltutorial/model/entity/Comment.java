@@ -1,9 +1,9 @@
 package com.sungwonkim.querydsltutorial.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -12,8 +12,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Comment {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Setter @ToString.Exclude @ManyToOne private Post post;
+  @JsonIgnore @Setter @ManyToOne private Post post;
 }
