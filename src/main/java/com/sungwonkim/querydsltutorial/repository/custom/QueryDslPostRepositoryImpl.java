@@ -6,6 +6,8 @@ import com.sungwonkim.querydsltutorial.model.entity.Post;
 import com.sungwonkim.querydsltutorial.model.entity.QComment;
 import com.sungwonkim.querydsltutorial.model.entity.QPost;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.querydsl.QPageRequest;
+import org.springframework.data.querydsl.QSort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,22 +26,23 @@ public class QueryDslPostRepositoryImpl implements QueryDslPostRepository {
   }
 
   @Override
-  public List<Post> findAllPostsWithComments() {
-    final List<Long> ids =
+  public List<Post> findAllPostWithCommentsByPageRequest(final QPageRequest pageRequest) {
+    final JPAQuery<Long> idsQuery =
         jpaQueryFactory
             .select(QPost.post.id)
             .from(QPost.post)
-            .offset(0)
-            .limit(10)
-            .distinct()
-            .fetch();
+            .offset(pageRequest.getOffset())
+            .limit(pageRequest.getPageSize())
+            .distinct();
+
+    (((QSort) pageRequest.getSort()).getOrderSpecifiers()).forEach(idsQuery::orderBy);
 
     final JPAQuery<Post> query =
         jpaQueryFactory
             .selectFrom(QPost.post)
             .leftJoin(QPost.post.comments, QComment.comment)
             .fetchJoin()
-            .where(QPost.post.id.in(ids))
+            .where(QPost.post.id.in(idsQuery.fetch()))
             .distinct();
 
     return query.fetch();

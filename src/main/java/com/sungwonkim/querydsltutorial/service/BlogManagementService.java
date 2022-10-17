@@ -9,6 +9,7 @@ import com.sungwonkim.querydsltutorial.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashSet;
@@ -34,11 +35,12 @@ public class BlogManagementService {
     }
   }
 
-  public void findAllPostWithComments() {
+  public void findAllPostWithCommentsByPageRequest(final QPageRequest qPageRequest) {
 
-    final List<Post> posts = postRepository.findAllPostsWithComments();
+    final List<Post> posts = postRepository.findAllPostWithCommentsByPageRequest(qPageRequest);
 
     for (final Post post : posts) {
+      System.out.println("post.getId() = " + post.getId());
       for (final Comment comment : post.getComments()) {
         continue;
       }
